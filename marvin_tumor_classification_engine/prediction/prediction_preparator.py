@@ -16,6 +16,8 @@ __all__ = ['PredictionPreparator']
 
 logger = get_logger('prediction_preparator')
 
+import pandas as pd
+
 
 class PredictionPreparator(EngineBasePrediction):
 
@@ -23,8 +25,6 @@ class PredictionPreparator(EngineBasePrediction):
         super(PredictionPreparator, self).__init__(**kwargs)
 
     def execute(self, input_message, params, **kwargs):
-        """
-        Return a prepared input_message compatible to the predict algorithm used by the model.
-        Use the self.model and self.metrics objects if necessary.
-        """
+        key_order = {"age": 0, "shape": 1, "margin": 2, "density": 3}
+        input_message = [input_message[i] for i in sorted(input_message, key=key_order.__getitem__)]
         return input_message

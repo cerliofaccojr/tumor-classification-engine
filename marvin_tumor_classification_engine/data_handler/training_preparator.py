@@ -16,6 +16,12 @@ __all__ = ['TrainingPreparator']
 
 logger = get_logger('training_preparator')
 
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+
+scaler = StandardScaler()
+
+
 
 class TrainingPreparator(EngineBaseDataHandler):
 
@@ -23,12 +29,12 @@ class TrainingPreparator(EngineBaseDataHandler):
         super(TrainingPreparator, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        """
-        Setup the dataset with the transformed data that is compatible with the algorithm used to build the model in the next action.
-        Use the self.initial_dataset prepared in the last action as source of data.
-
-        Eg.
-
-            self.marvin_dataset = {...}
-        """
-        self.marvin_dataset = {}
+        dfX = scaler.fit_transform(self.marvin_initial_dataset.drop([ 'BI_RADS', 'severity'], axis=1).values)
+        dfY = self.marvin_initial_dataset['severity'].values
+        X_train, X_test, y_train, y_test = train_test_split(dfX, dfY, test_size=0.25, random_state=0)
+        self.marvin_dataset = {
+            "X_train": X_train,
+            "X_test": X_test,
+            "y_train": y_train,
+            "y_test": y_test,
+        }

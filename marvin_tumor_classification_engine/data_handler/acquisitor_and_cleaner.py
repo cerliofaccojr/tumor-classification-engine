@@ -8,8 +8,9 @@ Use this module to add the project main code.
 
 from .._compatibility import six
 from .._logging import get_logger
+import pandas as pd
 
-from marvin_python_toolbox.engine_base import EngineBaseDataHandler
+from marvin_python_toolbox.engine_base import EngineBaseDataHandler\
 
 __all__ = ['AcquisitorAndCleaner']
 
@@ -23,11 +24,7 @@ class AcquisitorAndCleaner(EngineBaseDataHandler):
         super(AcquisitorAndCleaner, self).__init__(**kwargs)
 
     def execute(self, params, **kwargs):
-        """
-        Setup the initial_dataset with all cleaned data necessary to build your dataset in the next action.
-
-        Eg.
-
-            self.marvin_initial_dataset = {...}
-        """
-        self.marvin_initial_dataset = {}
+        featureNames = ['BI_RADS', 'age', 'shape', 'margin', 'density', 'severity']
+        df = pd.read_csv("/Users/cerliojunior/Downloads/DataScience-Python3/mammographic_masses.data.txt", na_values=['?'],  names = featureNames)
+        df.dropna(inplace=True)
+        self.marvin_initial_dataset = df

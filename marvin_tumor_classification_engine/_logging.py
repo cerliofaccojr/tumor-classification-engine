@@ -11,7 +11,7 @@ import os
 import os.path
 import logging
 
-DEFAULT_LOG_LEVEL = logging.WARNING
+DEFAULT_LOG_LEVEL = logging.DEBUG
 DEFAULT_LOG_DIR = '/tmp'
 
 
